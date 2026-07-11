@@ -2,19 +2,20 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebas
 import { 
     getAuth, 
     signInWithEmailAndPassword, 
-    createUserWithEmailAndPassword, // <- Nova função para registrar usuários
+    createUserWithEmailAndPassword, 
     signOut, 
     onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
-// ⚠️ IMPORTANTE: Cole as SUAS credenciais do Firebase aqui!
+// A sua configuração REAL do Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyAs-SUA-API-KEY-AQUI",
-    authDomain: "seu-projeto.firebaseapp.com",
-    projectId: "seu-projeto",
-    storageBucket: "seu-projeto.appspot.com",
-    messagingSenderId: "1234567890",
-    appId: "1:1234567890:web:abcdef123456"
+  apiKey: "AIzaSyAfPWvnGdvPKZ_lrVwOuag14WHLY9AgML8",
+  authDomain: "cinenet-ifpb.firebaseapp.com",
+  databaseURL: "https://cinenet-ifpb-default-rtdb.firebaseio.com",
+  projectId: "cinenet-ifpb",
+  storageBucket: "cinenet-ifpb.firebasestorage.app",
+  messagingSenderId: "1098247355110",
+  appId: "1:1098247355110:web:c9f867826f26b0ef171927"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -78,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Tenta fazer o Login
                     await signInWithEmailAndPassword(auth, email, password);
                 } else {
-                    // Tenta Criar a Conta (O Firebase já loga o usuário após criar)
+                    // Tenta Criar a Conta
                     await createUserWithEmailAndPassword(auth, email, password);
                     alert("Conta criada com sucesso! Bem-vindo ao Cine Flix.");
                 }
@@ -95,8 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     alert("A senha é muito fraca. Escolha uma com pelo menos 6 caracteres.");
                 } else if (error.code === 'auth/invalid-credential') {
                     alert("E-mail ou senha incorretos! Verifique e tente novamente.");
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    alert("O login por E-mail e Senha não está ativado no painel do Firebase!");
                 } else {
-                    alert("Ocorreu um erro. Tente novamente mais tarde.");
+                    alert("Ocorreu um erro: " + error.message);
                 }
 
                 // Restaura o botão caso dê erro
