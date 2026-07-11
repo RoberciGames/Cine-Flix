@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,71 +7,67 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="navbar" id="navbar">
-        <div class="logo">CINE FLIX</div>
-        <div class="nav-right">
-            <input type="text" id="search-input" class="search-bar" placeholder="Buscar filmes, séries e animes...">
-            <button id="logout-btn" class="btn-logout">Sair</button>
-        </div>
-    </nav>
+    <div id="navbar" class="nav">
+        <h1 style="color: #e50914; font-weight: bold; font-size: 28px; cursor: pointer;">STREAMING</h1>
+        <input type="text" id="search-input" placeholder="Pesquisar filmes, séries e animes...">
+    </div>
 
-    <header class="banner" id="banner">
+    <header id="banner" class="banner">
         <div class="banner-contents">
-            <h1 class="banner-title" id="banner-title">Carregando...</h1>
-            <p class="banner-description" id="banner-desc">Preparando o melhor catálogo para você...</p>
+            <h1 id="banner-title" class="banner-title">Carregando...</h1>
             <div class="banner-buttons">
-                <button class="banner-btn play">▶ Assistir</button>
-                <button class="banner-btn info">ⓘ Mais Informações</button>
+                <button class="banner-btn play">► Assistir</button>
+                <button class="banner-btn info">ℹ Mais Informações</button>
             </div>
+            <p id="banner-desc" class="banner-description"></p>
         </div>
         <div class="banner-fadeBottom"></div>
     </header>
 
-    <div id="search-container" class="rows-container" style="display: none;">
-        <div class="row">
-            <h2>Resultados da Busca</h2>
-            <div class="row-posters search-grid" id="search-row"></div>
+    <div id="main-content">
+        <div class="row-container">
+            <h2 class="row-title">Originais</h2>
+            <div id="originals-row" class="row"></div>
+        </div>
+
+        <div class="row-container">
+            <h2 class="row-title">Os Meus Filmes Exclusivos</h2>
+            <div id="my-movies-row" class="row"></div>
+        </div>
+
+        <div class="row-container">
+            <h2 class="row-title">As Minhas Séries Exclusivas</h2>
+            <div id="my-series-row" class="row"></div>
+        </div>
+
+        <div class="row-container">
+            <h2 class="row-title">Tendências Atuais</h2>
+            <div id="trending-row" class="row"></div>
+        </div>
+
+        <div class="row-container">
+            <h2 class="row-title">Ação e Aventura</h2>
+            <div id="action-row" class="row"></div>
+        </div>
+
+        <div class="row-container">
+            <h2 class="row-title">Animes</h2>
+            <div id="anime-row" class="row"></div>
         </div>
     </div>
 
-    <div class="row-container">
-    <h2 class="row-title">Originais</h2>
-    <div id="originals-row" class="row"></div>
-</div>
-
-<div class="row-container">
-    <h2 class="row-title">Tendências</h2>
-    <div id="trending-row" class="row"></div>
-</div>
-
-<div class="row-container">
-    <h2 class="row-title">Os Meus Filmes Exclusivos</h2>
-    <div id="my-movies-row" class="row"></div>
-</div>
-
-<div class="row-container">
-    <h2 class="row-title">As Minhas Séries Exclusivas</h2>
-    <div id="my-series-row" class="row"></div>
-</div>
-
-<div class="row-container">
-    <h2 class="row-title">Ação</h2>
-    <div id="action-row" class="row"></div>
-</div>
-
-<div class="row-container">
-    <h2 class="row-title">Anime</h2>
-    <div id="anime-row" class="row"></div>
-</div>
+    <div id="search-container" style="display: none; padding-top: 100px;">
+        <h2 class="row-title">Resultados da Pesquisa</h2>
+        <div id="search-row" class="row search-grid"></div>
+    </div>
 
     <div id="video-modal" class="modal-hidden">
         <div class="modal-content">
-            <span class="close-btn" id="close-modal">&times;</span>
-            <div id="iframe-container"></div>
+            <span id="close-modal" class="close-btn">&times;</span>
+            <div id="iframe-container" class="iframe-wrapper"></div>
         </div>
     </div>
 
-    <script type="module" src="auth.js"></script>
-    <script type="module" src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

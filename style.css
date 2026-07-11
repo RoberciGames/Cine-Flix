@@ -1,163 +1,104 @@
-/* --- BASE E VARIÁVEIS --- */
-:root {
-    --bg-color: #0f0f0f; /* Um preto mais profundo e moderno */
-    --text-color: #f5f5f5;
-    --red-netflix: #E50914;
-    --red-hover: #f40612;
-    --glass-bg: rgba(15, 15, 15, 0.85);
-}
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #111;
+    color: white;
     overflow-x: hidden;
-    user-select: none;
-    -webkit-font-smoothing: antialiased; /* Deixa a fonte mais suave */
 }
 
-/* Scrollbar invisível/fina para um visual limpo */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-color); }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--red-netflix); }
-
-/* --- NAVBAR (Efeito Vidro) --- */
-.navbar {
+/* Barra de Navegação */
+.nav {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 0 4%;
-    height: 75px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 20px 40px;
     z-index: 100;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
-    transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    transition: background-color 0.5s ease;
 }
 
-.navbar.black {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px); /* Efeito de vidro fosco moderno */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.nav.black {
+    background-color: #141414;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
-.logo {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: var(--red-netflix);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-shadow: 0 2px 10px rgba(229, 9, 20, 0.4); /* Brilho sutil na logo */
-    cursor: pointer;
-}
-
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.search-bar {
-    background-color: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    color: white;
-    padding: 10px 18px;
-    font-size: 1rem;
-    border-radius: 50px; /* Bordas arredondadas modernas */
-    width: 250px;
+#search-input {
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.3);
     outline: none;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.search-bar:focus {
-    width: 320px;
-    background-color: rgba(0, 0, 0, 0.9);
-    border-color: var(--red-netflix);
-    box-shadow: 0 0 15px rgba(229, 9, 20, 0.3);
-}
-
-.btn-logout {
-    background: transparent;
+    background: rgba(0,0,0,0.6);
     color: white;
-    border: 2px solid white;
-    padding: 8px 20px;
-    cursor: pointer;
-    border-radius: 50px;
-    font-weight: bold;
-    transition: 0.3s ease;
+    width: 300px;
+    transition: width 0.4s ease;
 }
 
-.btn-logout:hover {
-    background: white;
-    color: black;
-    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+#search-input:focus {
+    width: 400px;
+    border-color: white;
+    background: rgba(0,0,0,0.9);
 }
 
-/* --- BANNER DE DESTAQUE --- */
+/* Banner Principal */
 .banner {
-    height: 90vh; 
-    color: white;
+    height: 80vh;
     background-size: cover;
     background-position: center top;
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.banner::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(70deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    color: white;
+    object-fit: contain;
 }
 
 .banner-contents {
-    margin-left: 4%;
-    max-width: 650px;
-    position: relative;
-    z-index: 2;
+    margin-left: 40px;
+    padding-top: 25vh;
+    height: 190px;
 }
 
 .banner-title {
-    font-size: 4.5rem;
+    font-size: 3.5rem;
     font-weight: 800;
-    margin-bottom: 20px;
-    line-height: 1.1;
-    text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.8);
+    padding-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
 }
 
 .banner-description {
-    line-height: 1.6;
-    font-size: 1.25rem;
-    margin-bottom: 30px;
-    font-weight: 400;
-    color: #e0e0e0;
-    text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.8);
+    width: 45rem;
+    line-height: 1.4;
+    padding-top: 1rem;
+    font-size: 1.1rem;
+    max-width: 500px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
 }
 
-.banner-buttons { display: flex; gap: 15px; }
+.banner-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
 
 .banner-btn {
     cursor: pointer;
+    color: white;
     outline: none;
     border: none;
-    font-weight: bold;
-    font-size: 1.2rem;
-    border-radius: 6px;
-    padding: 12px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    transition: transform 0.2s, background-color 0.2s;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 10px 30px;
+    font-size: 1.1rem;
+    background-color: rgba(109, 109, 110, 0.7);
+    transition: all 0.2s;
+}
+
+.banner-btn:hover {
+    color: #000;
+    background-color: #e6e6e6;
 }
 
 .banner-btn.play {
@@ -165,195 +106,151 @@ body {
     color: black;
 }
 
-.banner-btn.play:hover { 
-    background-color: #d1d1d1; 
-    transform: scale(1.05);
-}
-
-.banner-btn.info {
-    background-color: rgba(109, 109, 110, 0.6);
-    color: white;
-    backdrop-filter: blur(5px);
-}
-
-.banner-btn.info:hover { 
-    background-color: rgba(109, 109, 110, 0.4); 
-    transform: scale(1.05);
+.banner-btn.play:hover {
+    background-color: rgba(255,255,255,0.7);
 }
 
 .banner-fadeBottom {
-    height: 250px;
-    background-image: linear-gradient(180deg, transparent, rgba(15,15,15,0.7), var(--bg-color));
-    position: absolute;
-    bottom: -2px;
-    width: 100%;
+    height: 15rem;
+    background-image: linear-gradient(180deg, transparent, rgba(17,17,17,0.61), #111);
+    margin-top: calc(80vh - 190px - 15rem);
 }
 
-/* --- VITRINES DE FILMES (CARROSSEL COM EFEITO 3D) --- */
-.rows-container {
-    padding: 0 4%;
-    margin-top: -120px; 
+/* Fileiras (Catálogos) e Carrossel */
+.row-container {
     position: relative;
-    z-index: 10;
+    margin-bottom: 30px;
+    padding-left: 20px;
 }
 
-.row { margin-bottom: 40px; }
-
-.row h2 {
-    font-size: 1.5rem;
+.row-title {
+    font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 15px;
-    color: #f5f5f5;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 10px;
+    padding-left: 20px;
 }
 
-.row-posters {
+.row {
     display: flex;
     overflow-y: hidden;
-    overflow-x: auto;
-    padding: 20px 0;
-    gap: 14px;
+    overflow-x: scroll;
+    padding: 10px 20px;
+    -ms-overflow-style: none; /* IE e Edge */
+    scrollbar-width: none; /* Firefox */
     scroll-behavior: smooth;
 }
 
-.row-posters::-webkit-scrollbar { display: none; } 
+.row::-webkit-scrollbar {
+    display: none; /* Oculta a barra de scroll no Chrome/Safari */
+}
 
 .poster {
-    object-fit: cover;
     width: 100%;
-    max-height: 160px;
-    border-radius: 8px; /* Bordas um pouco mais arredondadas */
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, border 0.4s ease;
+    object-fit: contain;
+    max-height: 200px;
+    margin-right: 15px;
+    transition: transform 0.3s ease;
+    border-radius: 4px;
     cursor: pointer;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
-    border: 2px solid transparent; /* Preparando para o hover */
 }
 
-/* Super efeito de Hover "Premium" */
 .poster:hover {
-    transform: scale(1.15) translateY(-5px); 
-    box-shadow: 0px 15px 25px rgba(0,0,0,0.9);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    z-index: 11;
+    transform: scale(1.08);
 }
 
-.poster-large { max-height: 320px; }
-.poster-large:hover { transform: scale(1.08) translateY(-5px); }
+.poster-large {
+    max-height: 300px;
+}
 
-/* --- RESULTADOS DE BUSCA --- */
+/* Botões do Carrossel (Setas) */
+.slider-arrow {
+    position: absolute;
+    top: 40px;
+    width: 45px;
+    height: calc(100% - 40px);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 3rem;
+    border: none;
+    cursor: pointer;
+    z-index: 5;
+    opacity: 0; 
+    transition: opacity 0.3s ease, background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.row-container:hover .slider-arrow {
+    opacity: 1;
+}
+
+.slider-arrow:hover {
+    background: rgba(0, 0, 0, 0.9);
+    font-size: 3.5rem;
+}
+
+.slider-arrow.left { left: 0; }
+.slider-arrow.right { right: 0; }
+
+/* Grid de Pesquisa */
 .search-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    justify-content: flex-start;
-    padding-top: 100px;
-}
-.search-grid .poster {
-    width: calc(100% / 6 - 15px);
-    max-height: 320px;
-    margin-bottom: 25px;
 }
 
-/* --- TELA DE LOGIN (Preservada da etapa anterior) --- */
-.login-body {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.9)), url('https://assets.nflxext.com/ffe/siteui/vlv3/a73c4363-1dcd-4719-b3b1-3725418fd91d/fe1147dd-78be-44aa-a0e5-2d2994305a13/BR-pt-20231016-popsignuptwoweeks-perspective_alpha_website_large.jpg') no-repeat center center/cover;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+/* Modal do Leitor de Vídeo */
+.modal-hidden {
+    display: none;
 }
-.login-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-.login-box {
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px); /* Trazendo o vidro para o login também */
-    padding: 60px 68px 40px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 450px;
-    color: white;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-}
-.login-box h2 { font-size: 2rem; margin-bottom: 28px; font-weight: 600; }
-.login-box form { display: flex; flex-direction: column; gap: 16px; }
-.login-box input {
-    background-color: rgba(51, 51, 51, 0.8);
-    border: 1px solid transparent;
-    border-radius: 4px;
-    padding: 16px 20px;
-    color: white;
-    font-size: 1rem;
-    outline: none;
-    transition: 0.3s;
-}
-.login-box input:focus {
-    background-color: #444;
-    border-color: var(--red-netflix);
-}
-.btn-login {
-    background-color: var(--red-netflix);
-    color: white;
-    font-size: 1.1rem;
-    font-weight: bold;
-    padding: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 24px;
-    transition: 0.3s;
-}
-.btn-login:hover { background-color: var(--red-hover); transform: scale(1.02); }
-.login-help { display: flex; justify-content: space-between; font-size: 0.85rem; color: #b3b3b3; margin-top: 10px; }
-.login-help a { color: #b3b3b3; text-decoration: none; }
-.login-help a:hover { text-decoration: underline; }
-.login-footer { margin-top: 60px; color: #737373; }
-.signup-link { color: white; text-decoration: none; font-weight: 500; }
-.signup-link:hover { text-decoration: underline; }
 
-/* --- MODAL DO PLAYER --- */
-.modal-hidden { display: none; }
 .modal-visible {
     display: flex;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(0,0,0,0.95);
+    z-index: 200;
     justify-content: center;
     align-items: center;
-    animation: fadeIn 0.4s ease;
 }
-@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
 .modal-content {
     position: relative;
-    width: 90%;
-    max-width: 1100px;
-    background: #000;
-    border-radius: 12px;
-    box-shadow: 0 0 50px rgba(0,0,0,1);
+    width: 85%;
+    height: 85%;
+    background-color: #000;
+    border-radius: 8px;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.8);
 }
+
 .close-btn {
     position: absolute;
-    top: -20px; right: -20px;
+    top: -20px;
+    right: -20px;
     color: white;
-    font-size: 30px;
-    background: var(--bg-color);
-    border: 2px solid white;
-    border-radius: 50%;
-    width: 45px; height: 45px;
-    display: flex;
-    justify-content: center; align-items: center;
+    font-size: 35px;
+    font-weight: bold;
     cursor: pointer;
-    z-index: 1001;
-    transition: 0.3s;
+    z-index: 300;
+    background: #e50914;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    transition: background 0.2s;
 }
-.close-btn:hover { background: var(--red-netflix); transform: scale(1.15) rotate(90deg); border-color: var(--red-netflix); }
-#iframe-container iframe {
-    width: 100% !important; height: auto !important;
-    aspect-ratio: 16/9;
-    border-radius: 12px;
+
+.close-btn:hover {
+    background: #b20710;
+}
+
+.iframe-wrapper {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
 }
