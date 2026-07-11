@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix" class="logo">
+        <button id="logout-btn" class="btn-logout">Sair</button>
+    </nav>
+
+    <header class="banner" id="banner">
+        <div class="banner-contents">
+            <h1 class="banner-title" id="banner-title">Carregando...</h1>
+            <div class="banner-buttons">
+                <button class="banner-btn play">► Assistir</button>
+                <button class="banner-btn info">ⓘ Mais Informações</button>
+            </div>
+            <p class="banner-description" id="banner-desc">Carregando sinopse do filme principal...</p>
+        </div>
+        <div class="banner-fadeBottom"></div>
+    </header>
+
+    <div class="rows-container">
+        <div class="row">
+            <h2>Originais Netflix</h2>
+            <div class="row-posters" id="originals-row"></div>
+        </div>
+        <div class="row">
+            <h2>Bombando / Populares</h2>
+            <div class="row-posters" id="trending-row"></div>
+        </div>
+        <div class="row">
+            <h2>Filmes de Ação</h2>
+            <div class="row-posters" id="action-row"></div>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
