@@ -3,24 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cine Flix - Login</title>
+    <title>Cine Flix - Autenticação</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .toggle-link {
+            color: #aaa;
+            margin-top: 15px;
+            display: block;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .toggle-link span {
+            color: #e50914;
+            font-weight: bold;
+        }
+        .toggle-link span:hover {
+            text-decoration: underline;
+        }
+        .hidden-form {
+            display: none;
+        }
+    </style>
 </head>
 <body class="login-body">
     <div class="login-container">
-        <h2>Entrar no Cine Flix</h2>
-        <form id="login-form">
-            <input type="email" id="email" placeholder="E-mail" required>
-            <input type="password" id="password" placeholder="Palavra-passe" required>
-            <button type="submit" class="login-btn">Entrar</button>
-        </form>
+        <div id="login-box">
+            <h2>Entrar no Cine Flix</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="E-mail" required>
+                <input type="password" id="login-password" placeholder="Palavra-passe" required>
+                <button type="submit" class="login-btn">Entrar</button>
+            </form>
+            <div class="toggle-link" onclick="toggleForms()">Novo por aqui? <span style="color: #e50914;">Registe-se agora.</span></div>
+        </div>
+
+        <div id="register-box" class="hidden-form">
+            <h2>Criar Conta Cine Flix</h2>
+            <form id="register-form">
+                <input type="text" id="reg-name" placeholder="Nome do Utilizador" required>
+                <input type="email" id="reg-email" placeholder="E-mail" required>
+                <input type="password" id="reg-password" placeholder="Criar Palavra-passe" required>
+                <button type="submit" class="login-btn" style="background-color: #b20710;">Criar Conta</button>
+            </form>
+            <div class="toggle-link" onclick="toggleForms()">Já tem conta? <span>Entrar.</span></div>
+        </div>
     </div>
+
     <script>
+        // Função para alternar entre a tela de Login e a de Registo
+        function toggleForms() {
+            const loginBox = document.getElementById("login-box");
+            const registerBox = document.getElementById("register-box");
+            
+            if (loginBox.style.display === "none") {
+                loginBox.style.display = "block";
+                registerBox.style.display = "none";
+            } else {
+                loginBox.style.display = "none";
+                registerBox.style.display = "block";
+            }
+        }
+
+        // Sistema de Registo (Guarda utilizadores no localStorage)
+        document.getElementById("register-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const email = document.getElementById("reg-email").value.trim();
+            const password = document.getElementById("reg-password").value.trim();
+
+            // Procura se o e-mail já existe
+            if (localStorage.getItem(`user_${email}`)) {
+                alert("Este e-mail já está registado!");
+                return;
+            }
+
+            // Salva as informações do utilizador
+            localStorage.setItem(`user_${email}`, password);
+            alert("Conta criada com sucesso! Faça login para continuar.");
+            toggleForms(); // Volta para a tela de login
+        });
+
+        // Sistema de Validação de Login
         document.getElementById("login-form").addEventListener("submit", function(e) {
             e.preventDefault();
-            // Lógica de autenticação simples: guarda o estado de logado e redireciona
-            localStorage.setItem("logado", "true");
-            window.location.href = "index.html";
+            const email = document.getElementById("login-email").value.trim();
+            const password = document.getElementById("login-password").value.trim();
+
+            // Conta padrão administrativa (Para o caso de testares rápido)
+            if (email === "admin@cineflix.com" && password === "123456") {
+                localStorage.setItem("logado", "true");
+                window.location.href = "index.html";
+                return;
+            }
+
+            // Valida na "base de dados" local (localStorage)
+            const savedPassword = localStorage.getItem(`user_${email}`);
+
+            if (savedPassword && savedPassword === password) {
+                localStorage.setItem("logado", "true");
+                window.location.href = "index.html"; // Entra no site
+            } else {
+                alert("E-mail ou palavra-passe incorretos! Tente novamente.");
+            }
         });
     </script>
 </body>
