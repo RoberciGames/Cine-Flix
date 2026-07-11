@@ -1,4 +1,4 @@
-const API_KEY = 'f2282baff5e51d3234ab949a7d725bcc'; 
+const API_KEY = '8d48f8c954d10e3b897cf8f2ea3e1292'; 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL = 'https://image.tmdb.org/t/p/original';
 
@@ -11,7 +11,7 @@ const requests = {
 };
 
 // ==========================================
-// SEGURANÇA E SESSÃO (CONECTADO AO LOGIN/REGISTO)
+// SEGURANÇA E CONTROLO DE ACESSO
 // ==========================================
 function checkLogin() {
     if (localStorage.getItem("logado") !== "true") {
@@ -53,7 +53,7 @@ async function loadContent() {
         const dataAnime = await resAnime.json();
         renderMovies(dataAnime.results, "anime-row", false, "tv");
 
-        // Carrega as listas de IDs embutidas abaixo
+        // Dispara o carregamento das listas internas de IDs
         await loadCustomLists();
     } catch (error) {
         console.error("Erro ao carregar o Cine Flix:", error);
@@ -61,31 +61,33 @@ async function loadContent() {
 }
 
 // ==========================================
-// PROCESSAMENTO DOS IDs DIRETOS DO APP.JS
+// LISTAS COMPLETAS DE FILMES E SÉRIES (DIRETO NO APP.JS)
 // ==========================================
 async function loadCustomLists() {
     try {
-        // 🚨 COLOQUE A SUA LISTA COMPLETA DE IDs DE FILMES AQUI DENTRO
+        // IDs extraídos diretamente do seu movie.json
         const movieIds = [
-            1500890, 1484913, 1308767, 1722713, 1173019, 60489, 241004, 
-            1252157, 1183340, 1272300, 1338458, 1418441, 1701720, 1442023
+            1500890, 1484913, 1308767, 1722713, 1173019, 60489, 241004, 1252157, 1183340, 
+            1272300, 1338458, 1418441, 1701720, 1442023, 1479013, 1483824, 1619765, 1691893, 
+            1212763, 1108427, 1710008, 1205225, 1338799, 940979, 2331, 15283, 1139746
         ];
 
-        // 🚨 COLOQUE A SUA LISTA COMPLETA DE IDs DE SÉRIES AQUI DENTRO
+        // IDs extraídos diretamente do seu series.json
         const seriesIds = [
-            307585, 283657, 290232, 228177, 302824, 9262, 308403, 
-            312849, 287075, 285993, 324335, 130385, 128497, 224108
+            307585, 283657, 290232, 228177, 302824, 9262, 308403, 312849, 287075, 
+            285993, 324335, 130385, 128497, 224108, 62644, 230241, 68045, 74076, 
+            54477, 93972, 89763, 16952, 127814, 31115, 210733, 75415, 111615
         ];
 
-        // Mapeia e renderiza os Filmes Exclusivos (Limitado a 30 por performance)
-        const moviePromises = movieIds.slice(0, 30).map(id => 
+        // Processa os Filmes Exclusivos (Limite de 24 itens exibidos por vez)
+        const moviePromises = movieIds.slice(0, 24).map(id => 
             fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=pt-PT`).then(res => res.json())
         );
         const customMovies = await Promise.all(moviePromises);
         renderMovies(customMovies.filter(m => !m.status_code), "my-movies-row", false, "movie");
 
-        // Mapeia e renderiza as Séries Exclusivas (Limitado a 30 por performance)
-        const seriesPromises = seriesIds.slice(0, 30).map(id => 
+        // Processa as Séries Exclusivas (Limite de 24 itens exibidos por vez)
+        const seriesPromises = seriesIds.slice(0, 24).map(id => 
             fetch(`${BASE_URL}/tv/${id}?api_key=${API_KEY}&language=pt-PT`).then(res => res.json())
         );
         const customSeries = await Promise.all(seriesPromises);
@@ -127,7 +129,7 @@ function renderMovies(movies, containerId, isLarge, defaultType) {
         parent.insertBefore(leftArrow, container); parent.appendChild(rightArrow);
     }
 
-    container.innerHTML = ""; // Limpa antes de injetar para evitar duplicações
+    container.innerHTML = ""; 
     movies.forEach(movie => {
         if (movie.poster_path) {
             const img = document.createElement("img");
@@ -142,13 +144,13 @@ function renderMovies(movies, containerId, isLarge, defaultType) {
 }
 
 // ==========================================
-// PLAYER ULTRA LIMPO E SEM REMAPEAMENTO DE ROTAS
+// PLAYER CORRIGIDO E SEM AS ROTAS INTERMÉDIAS QUEBRADAS
 // ==========================================
 function openPlayer(id, type) {
     const modal = document.getElementById("video-modal");
     const container = document.getElementById("iframe-container");
     
-    // Rota direta usando apenas o ID
+    // URL limpa enviando os parâmetros aceitos de forma estável
     let embedUrl = (type === "tv" || type === "anime") 
         ? `https://mgeb.top/api/series/${id}/1/1` 
         : `https://mgeb.top/api/movie/${id}`;
@@ -177,7 +179,7 @@ document.getElementById("close-modal")?.addEventListener("click", () => {
     document.getElementById("iframe-container").innerHTML = "";
 });
 
-// Sistema de Pesquisa
+// Pesquisa Global
 document.getElementById("search-input")?.addEventListener("input", async (e) => {
     const query = e.target.value.trim();
     if (query.length > 2) {

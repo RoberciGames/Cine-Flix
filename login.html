@@ -3,107 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cine Flix - Autenticação</title>
+    <title>Cine Flix - Login e Registo</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .toggle-link {
-            color: #aaa;
-            margin-top: 15px;
-            display: block;
-            text-align: center;
+        .toggle-text {
+            color: #8c8c8c;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+        .toggle-text span {
+            color: #fff;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-weight: 500;
         }
-        .toggle-link span {
-            color: #e50914;
-            font-weight: bold;
-        }
-        .toggle-link span:hover {
+        .toggle-text span:hover {
             text-decoration: underline;
         }
-        .hidden-form {
-            display: none;
+        .hidden-panel {
+            display: none !important;
         }
     </style>
 </head>
 <body class="login-body">
     <div class="login-container">
-        <div id="login-box">
+        <div id="panel-login">
             <h2>Entrar no Cine Flix</h2>
-            <form id="login-form">
-                <input type="email" id="login-email" placeholder="E-mail" required>
+            <form id="form-login">
+                <input type="email" id="login-email" placeholder="E-mail ou número de telemóvel" required>
                 <input type="password" id="login-password" placeholder="Palavra-passe" required>
                 <button type="submit" class="login-btn">Entrar</button>
             </form>
-            <div class="toggle-link" onclick="toggleForms()">Novo por aqui? <span style="color: #e50914;">Registe-se agora.</span></div>
+            <p class="toggle-text">Novo no Cine Flix? <span onclick="changePanel('register')">Registe-se agora.</span></p>
         </div>
 
-        <div id="register-box" class="hidden-form">
-            <h2>Criar Conta Cine Flix</h2>
-            <form id="register-form">
-                <input type="text" id="reg-name" placeholder="Nome do Utilizador" required>
-                <input type="email" id="reg-email" placeholder="E-mail" required>
-                <input type="password" id="reg-password" placeholder="Criar Palavra-passe" required>
-                <button type="submit" class="login-btn" style="background-color: #b20710;">Criar Conta</button>
+        <div id="panel-register" class="hidden-panel">
+            <h2>Criar uma Conta</h2>
+            <form id="form-register">
+                <input type="text" id="reg-name" placeholder="Nome completo" required>
+                <input type="email" id="reg-email" placeholder="Endereço de e-mail" required>
+                <input type="password" id="reg-password" placeholder="Definir palavra-passe" minlength="6" required>
+                <button type="submit" class="login-btn" style="background-color: #b20710;">Registar Conta</button>
             </form>
-            <div class="toggle-link" onclick="toggleForms()">Já tem conta? <span>Entrar.</span></div>
+            <p class="toggle-text">Já tem uma conta? <span onclick="changePanel('login')">Iniciar sessão.</span></p>
         </div>
     </div>
 
     <script>
-        // Função para alternar entre a tela de Login e a de Registo
-        function toggleForms() {
-            const loginBox = document.getElementById("login-box");
-            const registerBox = document.getElementById("register-box");
-            
-            if (loginBox.style.display === "none") {
-                loginBox.style.display = "block";
-                registerBox.style.display = "none";
+        // Alternador de Formulários
+        function changePanel(target) {
+            const login = document.getElementById("panel-login");
+            const register = document.getElementById("panel-register");
+            if (target === 'register') {
+                login.classList.add("hidden-panel");
+                register.classList.remove("hidden-panel");
             } else {
-                loginBox.style.display = "none";
-                registerBox.style.display = "block";
+                login.classList.remove("hidden-panel");
+                register.classList.add("hidden-panel");
             }
         }
 
-        // Sistema de Registo (Guarda utilizadores no localStorage)
-        document.getElementById("register-form").addEventListener("submit", function(e) {
+        // Evento de Registo / Cadastro
+        document.getElementById("form-register").addEventListener("submit", function(e) {
             e.preventDefault();
-            const email = document.getElementById("reg-email").value.trim();
+            const email = document.getElementById("reg-email").value.trim().toLowerCase();
             const password = document.getElementById("reg-password").value.trim();
 
-            // Procura se o e-mail já existe
-            if (localStorage.getItem(`user_${email}`)) {
-                alert("Este e-mail já está registado!");
+            if (localStorage.getItem(`cineflix_user_${email}`)) {
+                alert("Este endereço de e-mail já se encontra registado.");
                 return;
             }
 
-            // Salva as informações do utilizador
-            localStorage.setItem(`user_${email}`, password);
-            alert("Conta criada com sucesso! Faça login para continuar.");
-            toggleForms(); // Volta para a tela de login
+            // Armazena as credenciais
+            localStorage.setItem(`cineflix_user_${email}`, password);
+            alert("Conta criada com sucesso! Faça login para aceder à plataforma.");
+            changePanel('login');
         });
 
-        // Sistema de Validação de Login
-        document.getElementById("login-form").addEventListener("submit", function(e) {
+        // Evento de Validação de Login
+        document.getElementById("form-login").addEventListener("submit", function(e) {
             e.preventDefault();
-            const email = document.getElementById("login-email").value.trim();
+            const email = document.getElementById("login-email").value.trim().toLowerCase();
             const password = document.getElementById("login-password").value.trim();
 
-            // Conta padrão administrativa (Para o caso de testares rápido)
+            // Credencial administrativa de emergência para testes
             if (email === "admin@cineflix.com" && password === "123456") {
                 localStorage.setItem("logado", "true");
                 window.location.href = "index.html";
                 return;
             }
 
-            // Valida na "base de dados" local (localStorage)
-            const savedPassword = localStorage.getItem(`user_${email}`);
+            // Pesquisa as credenciais registadas no dispositivo
+            const validPassword = localStorage.getItem(`cineflix_user_${email}`);
 
-            if (savedPassword && savedPassword === password) {
+            if (validPassword && validPassword === password) {
                 localStorage.setItem("logado", "true");
-                window.location.href = "index.html"; // Entra no site
+                window.location.href = "index.html";
             } else {
-                alert("E-mail ou palavra-passe incorretos! Tente novamente.");
+                alert("E-mail ou palavra-passe incorretos. Por favor, tente novamente.");
             }
         });
     </script>
