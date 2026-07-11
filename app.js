@@ -57,21 +57,24 @@ async function loadContent() {
     }
 }
 
-// Renderizar IDs Diretos (Insere as tuas listas completas aqui dentro)
+// Carrega os IDs diretamente dos arquivos JSON locais enviados
 async function loadCustomLists() {
     try {
-        const movieIds = [1500890, 1484913, 1308767, 1722713, 1173019, 60489, 241004, 1252157, 1183340, 1272300];
-        const seriesIds = [307585, 283657, 290232, 228177, 302824, 9262, 308403, 312849, 287075, 285993];
-
+        // Carrega a lista de Filmes Exclusivos
+        const resMoviesJson = await fetch('movie.json');
+        const movieIds = await resMoviesJson.json();
         const moviePromises = movieIds.slice(0, 20).map(id => fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=pt-PT`).then(res => res.json()));
         const customMovies = await Promise.all(moviePromises);
         renderMovies(customMovies.filter(m => !m.status_code), "my-movies-row", false, "movie");
 
+        // Carrega a lista de Séries Exclusivas
+        const resSeriesJson = await fetch('series.json');
+        const seriesIds = await resSeriesJson.json();
         const seriesPromises = seriesIds.slice(0, 20).map(id => fetch(`${BASE_URL}/tv/${id}?api_key=${API_KEY}&language=pt-PT`).then(res => res.json()));
         const customSeries = await Promise.all(seriesPromises);
         renderMovies(customSeries.filter(s => !s.status_code), "my-series-row", false, "tv");
     } catch (error) {
-        console.error("Erro nas listas manuais:", error);
+        console.error("Erro ao processar as listas personalizadas:", error);
     }
 }
 
@@ -84,6 +87,8 @@ function setupBanner(movie, type) {
         title.innerText = movie.name || movie.title || movie.original_name;
         const overview = movie.overview || "Sinopse não disponível.";
         desc.innerText = overview.length > 160 ? overview.substring(0, 160) + "..." : overview;
+        
+        // CORREÇÃO APLICADA: Mapeia dinamicamente o tipo correto no player do Banner
         document.querySelector(".banner-btn.play").onclick = () => openPlayer(movie.id, type);
     }
 }
@@ -111,6 +116,8 @@ function renderMovies(movies, containerId, isLarge, defaultType) {
             img.src = `${IMG_URL}${movie.poster_path}`;
             img.classList.add("poster");
             if (isLarge) img.classList.add("poster-large");
+            
+            // Garante que o tipo de média correto (Filme vs Série/Anime) é passado ao clicar no poster
             img.addEventListener("click", () => openPlayer(movie.id, movie.media_type || defaultType));
             container.appendChild(img);
         }
@@ -120,7 +127,9 @@ function renderMovies(movies, containerId, isLarge, defaultType) {
 function openPlayer(id, type) {
     const modal = document.getElementById("video-modal");
     const container = document.getElementById("iframe-container");
-    let embedUrl = (type === "tv" || type === "anime") ? `https://mgeb.top/api/series/${id}-1-1` : `https://mgeb.top/api/movie/${id}`;
+    
+    // RESOLVIDO EM TODOS: Mudança global para a rota correta usando barras separadoras de ID/Temporada/Episódio
+    let embedUrl = (type === "tv" || type === "anime") ? `https://mgeb.top/api/series/${id}/1/1` : `https://mgeb.top/api/movie/${id}`;
 
     if (!document.getElementById("netflix-loader-style")) {
         const style = document.createElement("style"); style.id = "netflix-loader-style";
