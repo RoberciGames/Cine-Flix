@@ -3,22 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix</title>
+    <title>Cine Flix - Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="auth-body">
-    <header class="auth-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix" class="logo">
-    </header>
+<body class="login-body">
+    
+    <nav class="navbar">
+        <div class="logo">CINE FLIX</div>
+    </nav>
 
     <div class="login-container">
-        <h2 id="auth-title">Entrar</h2>
-        <form id="login-form">
-            <input type="email" id="email" placeholder="E-mail" required>
-            <input type="password" id="password" placeholder="Senha" required>
-            <button type="submit" id="btn-submit" class="btn-primary">Entrar</button>
-        </form>
-        <p class="switch-auth" id="switch-text">Novo por aqui? <span id="go-to-register">Assine agora.</span></p>
+        <div class="login-box">
+            <h2>Entrar</h2>
+            
+            <form id="login-form">
+                <input type="email" id="email" placeholder="Email ou número de telefone" value="roberci.azevedo@academi" required>
+                <input type="password" id="password" placeholder="Senha" required>
+                
+                <button type="submit" class="btn-login">Entrar</button>
+                
+                <div class="login-help">
+                    <div>
+                        <input type="checkbox" id="remember" checked>
+                        <label for="remember">Lembre-se de mim</label>
+                    </div>
+                    <a href="#">Precisa de ajuda?</a>
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                <p>Novo por aqui? <a href="#" class="signup-link">Assine agora.</a></p>
+                <p class="captcha-text">Esta página é protegida pelo Google reCAPTCHA para garantir que você não é um robô.</p>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="auth.js"></script>
