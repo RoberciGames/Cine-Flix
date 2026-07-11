@@ -10,6 +10,7 @@ const requests = {
     searchMulti: `${BASE_URL}/search/multi?api_key=${API_KEY}&language=pt-BR&query=`
 };
 
+// Efeito de desfoque na barra de navegação
 window.addEventListener("scroll", () => {
     const nav = document.getElementById("navbar");
     if (nav) {
@@ -40,7 +41,7 @@ async function loadContent() {
 
         const resAnime = await fetch(requests.fetchAnime);
         const dataAnime = await resAnime.json();
-        renderMovies(dataAnime.results, "anime-row", false, "tv"); // Animes geralmente são TV na API
+        renderMovies(dataAnime.results, "anime-row", false, "tv");
 
     } catch (error) {
         console.error("Erro ao carregar os dados do TMDB:", error);
@@ -81,7 +82,7 @@ function renderMovies(movies, containerId, isLarge, defaultType) {
             img.alt = movie.name || movie.title;
             
             img.addEventListener("click", () => {
-                const type = movie.media_type || defaultType; 
+                const type = movie.media_type || defaultType;
                 openPlayer(movie.id, type);
             });
 
@@ -90,60 +91,41 @@ function renderMovies(movies, containerId, isLarge, defaultType) {
     });
 }
 
-// NOVO SISTEMA DE PLAYER (Busca o Trailer Oficial e toca nativamente)
-async function openPlayer(id, type) {
+// SISTEMA DE PLAYER ATUALIZADO (Rotas /api/movie e /api/series)
+function openPlayer(id, type) {
     const modal = document.getElementById("video-modal");
     const container = document.getElementById("iframe-container");
     
-    // Mostra o modal carregando
+    let embedUrl = "";
+
+    // Se for Série ou Anime, usa a rota /api/series/ com traços
+    if (type === "tv" || type === "anime") {
+        const season = 1;  
+        const episode = 1; 
+        embedUrl = `https://mgeb.top/api/series/${id}-${season}-${episode}`;
+    } else {
+        // Se for Filme, usa a rota /api/movie/
+        embedUrl = `https://mgeb.top/api/movie/${id}`;
+    }
+
+    // Cria o iframe do novo player
+    container.innerHTML = `
+        <iframe 
+            src="${embedUrl}" 
+            width="100%" 
+            height="100%" 
+            frameborder="0" 
+            allowfullscreen 
+            loading="lazy">
+        </iframe>`;
+    
     if (modal) {
         modal.classList.remove("modal-hidden");
         modal.classList.add("modal-visible");
     }
-    
-    container.innerHTML = `<h2 style="color: white; text-align: center; padding: 50px;">Buscando vídeo oficial...</h2>`;
-
-    try {
-        // Busca os vídeos atrelados a este filme/série na API
-        let videoUrl = `${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}&language=pt-BR`;
-        let resVideo = await fetch(videoUrl);
-        let dataVideo = await resVideo.json();
-        
-        // Se não achar em português, tenta buscar em inglês
-        if (dataVideo.results.length === 0) {
-            videoUrl = `${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}&language=en-US`;
-            resVideo = await fetch(videoUrl);
-            dataVideo = await resVideo.json();
-        }
-
-        if (dataVideo.results && dataVideo.results.length > 0) {
-            // Pega o primeiro vídeo que seja do YouTube
-            const trailer = dataVideo.results.find(vid => vid.site === "YouTube");
-            
-            if (trailer) {
-                // Monta o iframe do YouTube limpo e direto no seu site
-                container.innerHTML = `
-                    <iframe 
-                        src="https://www.youtube.com/embed/${trailer.key}?autoplay=1&rel=0&modestbranding=1" 
-                        width="100%" 
-                        height="100%" 
-                        frameborder="0" 
-                        allow="autoplay; encrypted-media; fullscreen" 
-                        allowfullscreen>
-                    </iframe>`;
-                return;
-            }
-        }
-        
-        // Se não houver nenhum trailer no banco de dados do TMDB
-        container.innerHTML = `<h2 style="color: white; text-align: center; padding: 50px;">Desculpe, o vídeo oficial não está disponível no banco de dados no momento.</h2>`;
-
-    } catch (error) {
-        console.error("Erro ao buscar o vídeo:", error);
-        container.innerHTML = `<h2 style="color: white; text-align: center; padding: 50px;">Erro ao carregar o player.</h2>`;
-    }
 }
 
+// Fecha o modal e destrói o iframe para parar o vídeo
 document.getElementById("close-modal")?.addEventListener("click", () => {
     const modal = document.getElementById("video-modal");
     const container = document.getElementById("iframe-container");
@@ -151,9 +133,10 @@ document.getElementById("close-modal")?.addEventListener("click", () => {
         modal.classList.remove("modal-visible");
         modal.classList.add("modal-hidden");
     }
-    if (container) container.innerHTML = ""; // Corta o vídeo imediatamente
+    if (container) container.innerHTML = ""; 
 });
 
+// Sistema de Busca
 const searchInput = document.getElementById("search-input");
 const mainContent = document.getElementById("main-content");
 const searchContainer = document.getElementById("search-container");
