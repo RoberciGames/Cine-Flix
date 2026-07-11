@@ -2,10 +2,12 @@ const API_KEY = 'f2282baff5e1d3234ab9494a7d725bcc';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL = 'https://image.tmdb.org/t/p/original';
 
+// 🔴 NOVO: Link fetchAnime adicionado (Procura animações em japonês no TMDB)
 const requests = {
     fetchOriginals: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_networks=213&language=pt-BR`,
     fetchTrending: `${BASE_URL}/trending/all/week?api_key=${API_KEY}&language=pt-BR`,
-    fetchActionMovies: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=28&language=pt-BR`
+    fetchActionMovies: `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=28&language=pt-BR`,
+    fetchAnime: `${BASE_URL}/discover/tv?api_key=${API_KEY}&with_genres=16&with_original_language=ja&language=pt-BR`
 };
 
 window.addEventListener("scroll", () => {
@@ -34,6 +36,11 @@ async function loadContent() {
         const resAction = await fetch(requests.fetchActionMovies);
         const dataAction = await resAction.json();
         renderMovies(dataAction.results, "action-row", false, "movie");
+
+        // 🔴 NOVO: Carrega e renderiza a fileira de Animes
+        const resAnime = await fetch(requests.fetchAnime);
+        const dataAnime = await resAnime.json();
+        renderMovies(dataAnime.results, "anime-row", false, "anime"); // Passa o tipo como 'anime'
 
     } catch (error) {
         console.error("Erro na comunicação com a API do TMDB:", error);
@@ -80,12 +87,20 @@ function renderMovies(movies, containerId, isLarge, defaultType) {
     });
 }
 
+// 🔴 NOVO: Função do Player inteligente (Sabe separar Filme, Série e Anime)
 function openPlayer(id, type) {
     const modal = document.getElementById("video-modal");
     const container = document.getElementById("iframe-container");
     
-    const embedType = (type === 'tv' || type === 'serie') ? 'serie' : 'filme';
-    const embedUrl = `https://myembed.biz/${embedType}/${id}`;
+    // Lógica para decidir qual a pasta correta no site embedmovies.org
+    let embedType = 'filmes'; // Padrão
+    if (type === 'tv' || type === 'serie') {
+        embedType = 'series';
+    } else if (type === 'anime') {
+        embedType = 'animes';
+    }
+    
+    const embedUrl = `https://embedmovies.org/${embedType}/${id}`;
 
     container.innerHTML = `
         <iframe 
