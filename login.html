@@ -1,46 +1,27 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cine Flix - Autenticação</title>
+    <title>Cine Flix - Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-body">
-    
-    <nav class="navbar">
-        <div class="logo">CINE FLIX</div>
-    </nav>
-
     <div class="login-container">
-        <div class="login-box">
-            <h2 id="form-title">Entrar</h2>
-            
-            <form id="auth-form">
-                <input type="email" id="email" placeholder="Email ou número de telefone" required>
-                <input type="password" id="password" placeholder="Senha (Mín. 6 caracteres)" minlength="6" required>
-                
-                <button type="submit" id="submit-btn" class="btn-login">Entrar</button>
-                
-                <div class="login-help">
-                    <div>
-                        <input type="checkbox" id="remember" checked>
-                        <label for="remember">Lembre-se de mim</label>
-                    </div>
-                    <a href="#">Precisa de ajuda?</a>
-                </div>
-            </form>
-            
-            <div class="login-footer">
-                <p>
-                    <span id="mode-text">Novo por aqui?</span> 
-                    <a href="#" id="toggle-mode" class="signup-link">Assine agora.</a>
-                </p>
-                <p class="captcha-text">Esta página é protegida pelo Google reCAPTCHA para garantir que você não é um robô.</p>
-            </div>
-        </div>
+        <h2>Entrar no Cine Flix</h2>
+        <form id="login-form">
+            <input type="email" id="email" placeholder="E-mail" required>
+            <input type="password" id="password" placeholder="Palavra-passe" required>
+            <button type="submit" class="login-btn">Entrar</button>
+        </form>
     </div>
-
-    <script type="module" src="auth.js"></script>
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            // Lógica de autenticação simples: guarda o estado de logado e redireciona
+            localStorage.setItem("logado", "true");
+            window.location.href = "index.html";
+        });
+    </script>
 </body>
 </html>

@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cine Flix</title>
+    <title>Cine Flix - Streaming</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="navbar" class="nav">
-        <h1 style="color: #e50914; font-weight: bold; font-size: 28px; cursor: pointer;">STREAMING</h1>
-        <input type="text" id="search-input" placeholder="Pesquisar filmes, séries e animes...">
+        <h1 style="color: #e50914; font-weight: bold; font-size: 28px; cursor: pointer;">CINE FLIX</h1>
+        <div class="nav-right">
+            <input type="text" id="search-input" placeholder="Pesquisar filmes, séries...">
+            <button onclick="logout()" class="logout-btn">Sair</button>
+        </div>
     </div>
 
     <header id="banner" class="banner">
@@ -26,7 +29,7 @@
 
     <div id="main-content">
         <div class="row-container">
-            <h2 class="row-title">Originais</h2>
+            <h2 class="row-title">Originais Cine Flix</h2>
             <div id="originals-row" class="row"></div>
         </div>
 
@@ -43,11 +46,6 @@
         <div class="row-container">
             <h2 class="row-title">Tendências Atuais</h2>
             <div id="trending-row" class="row"></div>
-        </div>
-
-        <div class="row-container">
-            <h2 class="row-title">Ação e Aventura</h2>
-            <div id="action-row" class="row"></div>
         </div>
 
         <div class="row-container">

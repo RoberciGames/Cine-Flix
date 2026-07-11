@@ -11,6 +11,48 @@ body {
     overflow-x: hidden;
 }
 
+/* Tela de Login */
+.login-body {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://assets.nflxext.com/ffe/siteui/vlv3/ab180a27-b661-44d7-a6d9-940cb32f2f4a/7fb2dea0-dfaa-4fe6-9a96-2a0ad237e8c1/PT-pt-20231009-popsignuptwoweeks-perspective_alpha_website_large.jpg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 60px;
+    border-radius: 8px;
+    width: 450px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    background: #333;
+    border: none;
+    border-radius: 4px;
+    color: white;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #e50914;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
 /* Barra de Navegação */
 .nav {
     position: fixed;
@@ -24,233 +66,108 @@ body {
     transition: background-color 0.5s ease;
 }
 
-.nav.black {
-    background-color: #141414;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-}
+.nav.black { background-color: #141414; }
+
+.nav-right { display: flex; gap: 20px; align-items: center; }
 
 #search-input {
     padding: 10px 20px;
     border-radius: 4px;
     border: 1px solid rgba(255,255,255,0.3);
-    outline: none;
     background: rgba(0,0,0,0.6);
     color: white;
-    width: 300px;
-    transition: width 0.4s ease;
+    width: 250px;
+    transition: width 0.4s;
 }
 
-#search-input:focus {
-    width: 400px;
-    border-color: white;
-    background: rgba(0,0,0,0.9);
+#search-input:focus { width: 350px; border-color: white; }
+
+.logout-btn {
+    background: #e50914;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 /* Banner Principal */
 .banner {
-    height: 80vh;
+    height: 75vh;
     background-size: cover;
     background-position: center top;
-    color: white;
-    object-fit: contain;
 }
 
 .banner-contents {
     margin-left: 40px;
     padding-top: 25vh;
-    height: 190px;
 }
 
-.banner-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    padding-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-}
+.banner-title { font-size: 3.5rem; font-weight: 800; text-shadow: 2px 2px 4px #000; }
 
-.banner-description {
-    width: 45rem;
-    line-height: 1.4;
-    padding-top: 1rem;
-    font-size: 1.1rem;
-    max-width: 500px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-}
+.banner-description { max-width: 500px; line-height: 1.4; font-size: 1.1rem; text-shadow: 2px 2px 4px #000; margin-top: 10px;}
 
-.banner-buttons {
-    display: flex;
-    gap: 15px;
-    margin-top: 15px;
-}
+.banner-buttons { display: flex; gap: 15px; margin-top: 15px; }
 
 .banner-btn {
-    cursor: pointer;
-    color: white;
-    outline: none;
-    border: none;
-    font-weight: 700;
-    border-radius: 4px;
-    padding: 10px 30px;
-    font-size: 1.1rem;
-    background-color: rgba(109, 109, 110, 0.7);
-    transition: all 0.2s;
+    cursor: pointer; font-weight: 700; border-radius: 4px; padding: 10px 30px; font-size: 1.1rem; border: none;
 }
 
-.banner-btn:hover {
-    color: #000;
-    background-color: #e6e6e6;
-}
-
-.banner-btn.play {
-    background-color: white;
-    color: black;
-}
-
-.banner-btn.play:hover {
-    background-color: rgba(255,255,255,0.7);
-}
+.banner-btn.play { background: white; color: black; }
 
 .banner-fadeBottom {
     height: 15rem;
-    background-image: linear-gradient(180deg, transparent, rgba(17,17,17,0.61), #111);
-    margin-top: calc(80vh - 190px - 15rem);
+    background-image: linear-gradient(180deg, transparent, rgba(17,17,17,0.6), #111);
+    margin-top: calc(75vh - 190px - 15rem);
 }
 
-/* Fileiras (Catálogos) e Carrossel */
-.row-container {
-    position: relative;
-    margin-bottom: 30px;
-    padding-left: 20px;
-}
+/* Fileiras e Carrossel */
+.row-container { position: relative; margin-bottom: 30px; }
 
-.row-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    padding-left: 20px;
-}
+.row-title { font-size: 1.4rem; padding-left: 40px; margin-bottom: 10px; }
 
 .row {
-    display: flex;
-    overflow-y: hidden;
-    overflow-x: scroll;
-    padding: 10px 20px;
-    -ms-overflow-style: none; /* IE e Edge */
-    scrollbar-width: none; /* Firefox */
-    scroll-behavior: smooth;
+    display: flex; overflow-y: hidden; overflow-x: scroll; padding: 10px 40px;
+    scrollbar-width: none; scroll-behavior: smooth;
 }
 
-.row::-webkit-scrollbar {
-    display: none; /* Oculta a barra de scroll no Chrome/Safari */
-}
+.row::-webkit-scrollbar { display: none; }
 
 .poster {
-    width: 100%;
-    object-fit: contain;
-    max-height: 200px;
-    margin-right: 15px;
-    transition: transform 0.3s ease;
-    border-radius: 4px;
-    cursor: pointer;
+    max-height: 180px; margin-right: 15px; transition: transform 0.3s; border-radius: 4px; cursor: pointer;
 }
 
-.poster:hover {
-    transform: scale(1.08);
-}
+.poster:hover { transform: scale(1.08); }
 
-.poster-large {
-    max-height: 300px;
-}
+.poster-large { max-height: 250px; }
 
-/* Botões do Carrossel (Setas) */
+/* Setas */
 .slider-arrow {
-    position: absolute;
-    top: 40px;
-    width: 45px;
-    height: calc(100% - 40px);
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    font-size: 3rem;
-    border: none;
-    cursor: pointer;
-    z-index: 5;
-    opacity: 0; 
-    transition: opacity 0.3s ease, background 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute; top: 40px; width: 45px; height: calc(100% - 40px);
+    background: rgba(0, 0, 0, 0.6); color: white; font-size: 2.5rem; border: none;
+    cursor: pointer; z-index: 5; opacity: 0; transition: opacity 0.3s;
 }
 
-.row-container:hover .slider-arrow {
-    opacity: 1;
-}
-
-.slider-arrow:hover {
-    background: rgba(0, 0, 0, 0.9);
-    font-size: 3.5rem;
-}
+.row-container:hover .slider-arrow { opacity: 1; }
 
 .slider-arrow.left { left: 0; }
+
 .slider-arrow.right { right: 0; }
 
-/* Grid de Pesquisa */
-.search-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-/* Modal do Leitor de Vídeo */
-.modal-hidden {
-    display: none;
-}
+/* Modal */
+.modal-hidden { display: none; }
 
 .modal-visible {
-    display: flex;
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background-color: rgba(0,0,0,0.95);
-    z-index: 200;
-    justify-content: center;
-    align-items: center;
+    display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(0,0,0,0.95); z-index: 200; justify-content: center; align-items: center;
 }
 
-.modal-content {
-    position: relative;
-    width: 85%;
-    height: 85%;
-    background-color: #000;
-    border-radius: 8px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.8);
-}
+.modal-content { position: relative; width: 85%; height: 85%; background: #000; border-radius: 8px; }
 
 .close-btn {
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    color: white;
-    font-size: 35px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 300;
-    background: #e50914;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    transition: background 0.2s;
+    position: absolute; top: -20px; right: -20px; color: white; font-size: 30px;
+    background: #e50914; border-radius: 50%; width: 45px; height: 45px;
+    display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 300;
 }
 
-.close-btn:hover {
-    background: #b20710;
-}
-
-.iframe-wrapper {
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-}
+.iframe-wrapper { width: 100%; height: 100%; overflow: hidden; border-radius: 8px; }
