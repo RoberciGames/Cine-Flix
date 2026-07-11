@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cine Flix - Login</title>
+    <title>Cine Flix - Autenticação</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-body">
@@ -14,13 +14,13 @@
 
     <div class="login-container">
         <div class="login-box">
-            <h2>Entrar</h2>
+            <h2 id="form-title">Entrar</h2>
             
-            <form id="login-form">
+            <form id="auth-form">
                 <input type="email" id="email" placeholder="Email ou número de telefone" required>
-                <input type="password" id="password" placeholder="Senha" required>
+                <input type="password" id="password" placeholder="Senha (Mín. 6 caracteres)" minlength="6" required>
                 
-                <button type="submit" class="btn-login">Entrar</button>
+                <button type="submit" id="submit-btn" class="btn-login">Entrar</button>
                 
                 <div class="login-help">
                     <div>
@@ -32,7 +32,10 @@
             </form>
             
             <div class="login-footer">
-                <p>Novo por aqui? <a href="#" class="signup-link">Assine agora.</a></p>
+                <p>
+                    <span id="mode-text">Novo por aqui?</span> 
+                    <a href="#" id="toggle-mode" class="signup-link">Assine agora.</a>
+                </p>
                 <p class="captcha-text">Esta página é protegida pelo Google reCAPTCHA para garantir que você não é um robô.</p>
             </div>
         </div>

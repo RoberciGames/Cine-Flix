@@ -2,11 +2,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebas
 import { 
     getAuth, 
     signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, // <- Nova função para registrar usuários
     signOut, 
     onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
-// ⚠️ IMPORTANTE: Substitua os dados abaixo pelas credenciais do SEU Firebase Console
+// ⚠️ IMPORTANTE: Cole as SUAS credenciais do Firebase aqui!
 const firebaseConfig = {
     apiKey: "AIzaSyAs-SUA-API-KEY-AQUI",
     authDomain: "seu-projeto.firebaseapp.com",
@@ -16,60 +17,96 @@ const firebaseConfig = {
     appId: "1:1234567890:web:abcdef123456"
 };
 
-// Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Identifica em qual página o usuário está atualmente
 const isLoginPage = window.location.pathname.includes("login.html") || window.location.pathname === "/" || window.location.pathname.endsWith("/");
 
-// Monitora o status do usuário (Logado ou Deslogado)
+// Bloqueio de Telas (Redirecionamento automático)
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // Se estiver logado e tentar acessar a página de login, vai para o início
-        if (isLoginPage) {
-            window.location.href = "index.html";
-        }
+        if (isLoginPage) window.location.href = "index.html";
     } else {
-        // Se NÃO estiver logado e tentar ver os filmes, é chutado para o login
-        if (!isLoginPage) {
-            window.location.href = "login.html";
-        }
+        if (!isLoginPage) window.location.href = "login.html";
     }
 });
 
-// Executa a lógica assim que o HTML carregar
 document.addEventListener("DOMContentLoaded", () => {
     
-    // Configura o formulário da página de Login
-    const loginForm = document.getElementById("login-form");
-    if (loginForm) {
-        loginForm.addEventListener("submit", async (e) => {
+    const authForm = document.getElementById("auth-form");
+    const formTitle = document.getElementById("form-title");
+    const submitBtn = document.getElementById("submit-btn");
+    const toggleModeBtn = document.getElementById("toggle-mode");
+    const modeText = document.getElementById("mode-text");
+    
+    // Variável que diz se estamos na tela de Login ou de Registro
+    let isLoginMode = true; 
+
+    // Alterna o visual do formulário entre "Entrar" e "Criar Conta"
+    if (toggleModeBtn) {
+        toggleModeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            isLoginMode = !isLoginMode; // Inverte o modo
+
+            if (isLoginMode) {
+                formTitle.innerText = "Entrar";
+                submitBtn.innerText = "Entrar";
+                modeText.innerText = "Novo por aqui?";
+                toggleModeBtn.innerText = "Assine agora.";
+            } else {
+                formTitle.innerText = "Criar Conta";
+                submitBtn.innerText = "Registrar";
+                modeText.innerText = "Já tem uma conta?";
+                toggleModeBtn.innerText = "Entre agora.";
+            }
+        });
+    }
+
+    // Processa o envio do formulário (Login ou Registro)
+    if (authForm) {
+        authForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value;
-            const submitBtn = loginForm.querySelector(".btn-login");
 
             try {
-                submitBtn.innerText = "Carregando...";
+                submitBtn.innerText = "Processando...";
                 submitBtn.disabled = true;
 
-                // Faz a autenticação real no Firebase
-                await signInWithEmailAndPassword(auth, email, password);
+                if (isLoginMode) {
+                    // Tenta fazer o Login
+                    await signInWithEmailAndPassword(auth, email, password);
+                } else {
+                    // Tenta Criar a Conta (O Firebase já loga o usuário após criar)
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    alert("Conta criada com sucesso! Bem-vindo ao Cine Flix.");
+                }
                 
-                // Redireciona para o catálogo
                 window.location.href = "index.html";
+
             } catch (error) {
-                console.error("Erro ao fazer login:", error);
-                alert("E-mail ou senha incorretos! Verifique os dados e tente novamente.");
-                submitBtn.innerText = "Entrar";
+                console.error("Erro na autenticação:", error);
+                
+                // Tratamento de erros em português
+                if (error.code === 'auth/email-already-in-use') {
+                    alert("Este e-mail já tem uma conta! Clique em 'Entre agora'.");
+                } else if (error.code === 'auth/weak-password') {
+                    alert("A senha é muito fraca. Escolha uma com pelo menos 6 caracteres.");
+                } else if (error.code === 'auth/invalid-credential') {
+                    alert("E-mail ou senha incorretos! Verifique e tente novamente.");
+                } else {
+                    alert("Ocorreu um erro. Tente novamente mais tarde.");
+                }
+
+                // Restaura o botão caso dê erro
+                submitBtn.innerText = isLoginMode ? "Entrar" : "Registrar";
                 submitBtn.disabled = false;
             }
         });
     }
 
-    // Configura o botão de Sair da página do Catálogo
+    // Sistema de Sair (Logout)
     const logoutBtn = document.getElementById("logout-btn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", async () => {
@@ -77,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 await signOut(auth);
                 window.location.href = "login.html";
             } catch (error) {
-                console.error("Erro ao deslogar:", error);
+                console.error("Erro ao sair da conta:", error);
             }
         });
     }
